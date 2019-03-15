@@ -36,14 +36,25 @@ fclose($file4);
             foreach ($songsArray as $song){
                 if($end != $song) {
                     ?>
-                    <input type="checkbox" name="options[]"
-                           value="<?php echo strtolower($song); ?>"/><?php echo $song; ?>
+                    <input type="checkbox" name="songDeleteOptions[]" value="<?php echo strtolower($song); ?>"/><?php echo $song; ?>
                     <?php
                     echo("<br>");
                 }
             }
             ?>
             <input type="submit" value="Delete" />
+            <?php
+            if(isset($_POST['songDeleteOptions']) && is_array($_POST['songDeleteOptions'])) {
+                $songsFileToDelte = fopen("songs.txt", "w");
+                foreach ($_POST['songDeleteOptions'] as $songDelete) {
+                    if (preg_match("/($songDelete)/", $songsFileToDelte)) {
+                        unset($songsFileToDelte[$songDelete]);
+                    }
+                }
+                    fclose($songsFileToDelte);
+                    header("Refresh:0");
+            }
+            ?>
         </form>
     </div>
 </div>
