@@ -44,12 +44,12 @@ fclose($file4);
             ?>
             <input type="submit" value="Delete" />
             <?php
+            $deletedFormat = "";
             if(isset($_POST['songDeleteOptions']) && is_array($_POST['songDeleteOptions'])) {
                 $songsFileToDelte = fopen("songs.txt", "w");
                 foreach ($_POST['songDeleteOptions'] as $songDelete) {
-                    if (preg_match("/($songDelete)/", $songsFileToDelte)) {
-                        unset($songsFileToDelte[$songDelete]);
-                    }
+                    $songsFileToDelte =str_replace("$songDelete ,", "$deletedFormat",$songsFileToDelte);
+                    file_put_contents('songs.txt', $songsFileToDelte);
                 }
                     fclose($songsFileToDelte);
                     header("Refresh:0");
