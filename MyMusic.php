@@ -49,7 +49,7 @@ fclose($file4);
 </div>
 <div class= "storeZtunes"; id="2"><h2>Ztunes Store</h2>
     <div style="overflow-scrolling: auto; height:200px; width:400px">
-        <form method ="post" action="MyMusic.php">
+        <form method ="post">
             <?php
             foreach ($ZtunesArray as $songFromStore1){
                 ?>
@@ -57,9 +57,23 @@ fclose($file4);
             <?php
                 echo("<br>");
             }
-            //Found this part on the internet but dont know how to use it
             ?>
-            <input type="submit" value="Buy" onclick = "return RefreshWindow(true);"/>
+            <input type="submit" value="Buy"/>
+        </form>
+    </div>
+</div>
+<div class ="storeZamazon"; id ="3"><h2>Zmazon Store</h2>
+    <div style="overflow-scrolling: auto; height:200px; width:400px">
+        <form method ="post">
+            <?php
+            foreach ($ZmazonArray as $songFromStore2){
+                ?>
+                <input type="checkbox" name="options[]" value="<?php echo strtolower($songFromStore2); ?>"/><?php echo $songFromStore2; ?>
+                <?php
+                echo("<br>");
+            }
+            ?>
+            <input type="submit" value="Buy" />
             <?php
             if(isset($_POST['options']) && is_array($_POST['options'])){
                 $songsFile = fopen("songs.txt","a");
@@ -67,30 +81,7 @@ fclose($file4);
                     fwrite($songsFile, $songAdd .",");
                 }
                 fclose($songsFile);
-            }
-            ?>
-        </form>
-    </div>
-</div>
-<div class ="storeZamazon"; id ="3"><h2>Zmazon Store</h2>
-    <div style="overflow-scrolling: auto; height:200px; width:400px">
-        <form method ="post" action="MyMusic.php">
-            <?php
-            foreach ($ZmazonArray as $songFromStore2){
-                ?>
-                <input type="checkbox" name="options2[]" value="<?php echo strtolower($songFromStore2); ?>"/><?php echo $songFromStore2; ?>
-                <?php
-                echo("<br>");
-            }
-            ?>
-            <input type="submit" value="Buy" />
-            <?php
-            if(isset($_POST['options2']) && is_array($_POST['options2'])){
-                $songsFile2 = fopen("songs.txt","a");
-                foreach ($_POST['options2'] as $songAdd2){
-                    fwrite($songsFile, $songAdd2 .",");
-                }
-                fclose($songsFile);
+                header("Refresh:0");
             }
             ?>
         </form>
