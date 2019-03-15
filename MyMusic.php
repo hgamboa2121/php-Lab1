@@ -22,9 +22,9 @@ fclose($file4);
             <select>
                 <option selected="selected">Choose a playlist</option>
                 <?php
-                foreach($userPlaylistName as $item){
+                foreach($userPlaylistName as $playlist){
                     ?>
-                    <option value="<?php echo strtolower($item); ?>"><?php echo $item; ?></option>
+                    <option value="<?php echo strtolower($playlist); ?>"><?php echo $playlist; ?></option>
                     <?php
                 }
                 ?>
@@ -32,11 +32,15 @@ fclose($file4);
             <input type="submit" value="Submit">
             <?php
             echo ("<br>");
-            foreach ($songsArray as $item1){
-                ?>
-                <input type="checkbox" name="options[]" value="<?php echo strtolower($item1); ?>"/><?php echo $item1; ?>
-            <?php
-                echo("<br>");
+            $end = end($songsArray);
+            foreach ($songsArray as $song){
+                if($end != $song) {
+                    ?>
+                    <input type="checkbox" name="options[]"
+                           value="<?php echo strtolower($song); ?>"/><?php echo $song; ?>
+                    <?php
+                    echo("<br>");
+                }
             }
             ?>
             <input type="submit" value="Delete" />
@@ -45,20 +49,24 @@ fclose($file4);
 </div>
 <div class= "storeZtunes"; id="2"><h2>Ztunes Store</h2>
     <div style="overflow-scrolling: auto; height:200px; width:400px">
-        <form method ="post">
+        <form method ="post" action="MyMusic.php">
             <?php
-            foreach ($ZtunesArray as $item){
+            foreach ($ZtunesArray as $songFromStore1){
                 ?>
-                <input type="checkbox" name="options[]" value="<?php echo strtolower($item); ?>"/><?php echo $item; ?>
+                <input type="checkbox" name="options[]" value="<?php echo strtolower($songFromStore1); ?>"/><?php echo $songFromStore1; ?>
             <?php
                 echo("<br>");
             }
+            //Found this part on the internet but dont know how to use it
             ?>
-            <input type="submit" value="Buy" />
+            <input type="submit" value="Buy" onclick = "return RefreshWindow(true);"/>
             <?php
-            $songsBought = $_POST['options[]'];
-                foreach ($songsBought as $song){
-
+            if(isset($_POST['options']) && is_array($_POST['options'])){
+                $songsFile = fopen("songs.txt","a");
+                foreach ($_POST['options'] as $songAdd){
+                    fwrite($songsFile, $songAdd .",");
+                }
+                fclose($songsFile);
             }
             ?>
         </form>
@@ -66,16 +74,25 @@ fclose($file4);
 </div>
 <div class ="storeZamazon"; id ="3"><h2>Zmazon Store</h2>
     <div style="overflow-scrolling: auto; height:200px; width:400px">
-        <form method ="post">
+        <form method ="post" action="MyMusic.php">
             <?php
-            foreach ($ZmazonArray as $item){
+            foreach ($ZmazonArray as $songFromStore2){
                 ?>
-                <input type="checkbox" name="options[]" value="<?php echo strtolower($item); ?>"/><?php echo $item; ?>
+                <input type="checkbox" name="options2[]" value="<?php echo strtolower($songFromStore2); ?>"/><?php echo $songFromStore2; ?>
                 <?php
                 echo("<br>");
             }
             ?>
             <input type="submit" value="Buy" />
+            <?php
+            if(isset($_POST['options2']) && is_array($_POST['options2'])){
+                $songsFile2 = fopen("songs.txt","a");
+                foreach ($_POST['options2'] as $songAdd2){
+                    fwrite($songsFile, $songAdd2 .",");
+                }
+                fclose($songsFile);
+            }
+            ?>
         </form>
     </div>
 </div>
